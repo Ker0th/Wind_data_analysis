@@ -1,17 +1,16 @@
-import numpy as np
-from pandas import DataFrame
-
-dt = np.zeros(3)
-def dataLoad(filename):
-    names = 'Nx', 'Ny', 'Nz'
-
-    # note that the offsets are larger than the size of the type because of
-    # struct padding
-    offsets = 8, 4, 0
-    formats = 'f4', 'f4', 'f4'
-    dt = np.dtype({'names': names, 'offsets': offsets, 'formats': formats},align=True)
-    data = DataFrame(np.fromfile(filename, dt))
-    data = np.matrix(data)
-    print(dt)
-    return data
-print(dataLoad('test.bin'))
+import numpy as np
+def dataLoad(filename, Nx, Ny, Nz):
+    '''
+
+    :param filename: A string containing the filename of a data file
+    :param Nx: Size of the first dimension of the 3-dimensional output array
+    :param Ny: Size of the second dimension of the 3-dimensional output array
+    :param Nz: Size of the third dimension of the 3-dimensional output array
+    :return: A 3-dimensional array with size Nx x Ny x Nz
+    '''
+    try:
+        data = np.fromfile(filename, dtype='f4', count = Nx*Ny*Nz)
+        data = data.reshape([Nx,Ny,Nz])
+    except (ValueError,OverflowError):
+        print("Value out of range.")
+    return data
