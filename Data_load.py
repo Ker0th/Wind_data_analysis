@@ -10,6 +10,7 @@ def dataLoad(filename, Nx, Ny, Nz):
     '''
     try:
         data = np.fromfile(filename, dtype='f4', count = Nx*Ny*Nz)
+        #reshapes the vector to a Nx x Ny x Nz 3-dimensional array with Nz cahnging the fastes
         data = data.reshape([Nx,Ny,Nz])
     except (ValueError,OverflowError):
         print("Value out of range.")
