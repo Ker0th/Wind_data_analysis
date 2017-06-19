@@ -51,7 +51,7 @@ while True:
                             else:
                                 result = dataStatistics(data, statistic, Yref, Zref, DeltaX)
                                 print()
-                                print('the{0} is '.format(statistic), result)
+                                print('the{0} is'.format(statistic), result)
                                 print()
                                 break
                     #calclate the statistic the user wanted with default values for yref, zref and deltax
@@ -64,9 +64,44 @@ while True:
                         print('the{0} is '.format(statistic), result)
                         print()
         elif choice == 3:
-            print()
-            print(dataPlot(1,2,3))
-            print()
+            if data.any() == 0:
+                print('\nError: no data has been loaded\n')
+            else:
+                plotstatItems = np.array([' Mean', ' Variance', ' Cross correlation', ' Return to main menu'])
+                print('\nPlease select a type of statistic\n')
+                #data = dataorigin
+                while True:
+                    stat = displayMenu(plotstatItems)
+                    plotstatistic = plotstatItems[stat - 1]
+                    if plotstatistic == ' Return to main menu':
+                        print()
+                        break
+                    #checks if the user wants to use cross correlation statistic and ask the user to input the required values
+                    elif plotstatistic == ' Cross correlation':
+                        while True:
+                            try:
+                                Yref = float(input('\nWrite the wanted y referance: '))
+                                Zref = float(input('\nWrite the wanted z referance: '))
+                                DeltaX = float(input('\nWrite the wanted change in X: '))
+                            except ValueError:
+                                print('Error: That is not a number')
+                            else:
+                                result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
+                                dataPlot(result, plotstatistic)
+                                print()
+                                print('Close plots to continue')
+                                print()
+                                break
+                    # calclate the statistic the user wanted with default values for yref, zref and deltax
+                    else:
+                        Yref = 0
+                        Zref = 0
+                        DeltaX = 0
+                        result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
+                        dataPlot(result, plotstatistic)
+                        print()
+                        print('Close plots to continue')
+                        print()
         elif choice == 4:
             print()
             print('Quitting the program')
