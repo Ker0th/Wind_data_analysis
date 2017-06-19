@@ -103,6 +103,7 @@ while True:
                         print()
                         print('Close plots to continue')
                         print()
+                        print(result)
                         dataPlot(result, plotstatistic, Yref, Zref, DeltaX)
                         break
         elif choice == 4:
