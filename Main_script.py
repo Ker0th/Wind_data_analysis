@@ -35,10 +35,12 @@ while True:
                 while True:
                     stat = displayMenu(statItems)
                     statistic = statItems[stat - 1]
+                    #checks if the user want to quit the menu
                     if statistic == ' Return to main menu':
                         print()
                         break
-                    else:
+                    #checks if the user wants to use cross correlation statistic and ask the user to input the required values
+                    elif statistic == ' Cross correlation':
                         while True:
                             try:
                                 Yref = float(input('\nWrite the wanted y referance: '))
@@ -52,11 +54,20 @@ while True:
                                 print('the{0} is '.format(statistic), result)
                                 print()
                                 break
-        if choice == 3:
+                    #calclate the statistic the user wanted with default values for yref, zref and deltax
+                    else:
+                        Yref = 0
+                        Zref = 0
+                        DeltaX = 0
+                        result = dataStatistics(data, statistic,Yref, Zref, DeltaX)
+                        print()
+                        print('the{0} is '.format(statistic), result)
+                        print()
+        elif choice == 3:
             print()
             print(dataPlot(1,2,3))
             print()
-        if choice == 4:
+        elif choice == 4:
             print()
             print('Quitting the program')
             break
