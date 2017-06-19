@@ -5,13 +5,13 @@ def dataStatistics(data, statistic, Yref, Zref, DeltaX):
 
 
     if statistic == "Mean":
-        result =
+        #result =
 
     if statistic == "Variance":
-        result =
+        #result =
 
     if statistic == "Cross correlation":
         asgkjnasg
         askgjnadg
-        result =
+        #result =
     return result
