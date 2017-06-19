@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 
 def dataStatistics(data, statistic, Yref, Zref, DeltaX):
 
@@ -10,6 +9,9 @@ def dataStatistics(data, statistic, Yref, Zref, DeltaX):
         result = np.var(data, axis = 0)
 
     elif statistic == " Cross correlation":
-        result = np.zeros((2,2))
+        Nx = data.shape[0]
+        a = data[:, Nx - DeltaX]
+        b = data[DeltaX:, Yref, Zref]
+        result = (np.sum(np.multiply(a, b[:, np.newaxis, np.newaxis]), axis = 0)) / (Nx - DeltaX)
 
     return result
