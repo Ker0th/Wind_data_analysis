@@ -4,6 +4,7 @@ from Data_plot import *
 from Menu import *
 dataorigin = np.zeros(((1,1,1)))
 data = np.zeros(((1,1,1)))
+result = np.zeros((1,1))
 menuItems = np.array([' Load data', ' Display statistics', ' Generate plots', ' Quit'])
 while True:
     choice = displayMenu(menuItems)
@@ -87,7 +88,7 @@ while True:
                                 print('Error: That is not a number')
                             else:
                                 result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
-                                dataPlot(result, plotstatistic)
+                                dataPlot(result, plotstatistic, Yref, Zref, DeltaX)
                                 print()
                                 print('Close plots to continue')
                                 print()
@@ -97,11 +98,13 @@ while True:
                         Yref = 0
                         Zref = 0
                         DeltaX = 0
+                        #result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
                         result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
-                        dataPlot(result, plotstatistic)
                         print()
                         print('Close plots to continue')
                         print()
+                        dataPlot(result, plotstatistic, Yref, Zref, DeltaX)
+                        break
         elif choice == 4:
             print()
             print('Quitting the program')
