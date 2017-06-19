@@ -32,7 +32,7 @@ while True:
                 #run Statistic function
                 statItems = np.array([' Mean', ' Variance', ' Cross correlation', ' Return to main menu'])
                 print('\nPlease select a type of statistic\n')
-                data = dataorigin
+                #data = dataorigin
                 while True:
                     stat = displayMenu(statItems)
                     statistic = statItems[stat - 1]
@@ -44,9 +44,9 @@ while True:
                     elif statistic == ' Cross correlation':
                         while True:
                             try:
-                                Yref = float(input('\nWrite the wanted y referance: '))
-                                Zref = float(input('\nWrite the wanted z referance: '))
-                                DeltaX = float(input('\nWrite the wanted change in X: '))
+                                Yref = int(input('\nWrite the wanted y referance: '))
+                                Zref = int(input('\nWrite the wanted z referance: '))
+                                DeltaX = int(input('\nWrite the wanted change in X: '))
                             except ValueError:
                                     print('Error: That is not a number')
                             else:
@@ -81,9 +81,9 @@ while True:
                     elif plotstatistic == ' Cross correlation':
                         while True:
                             try:
-                                Yref = float(input('\nWrite the wanted y referance: '))
-                                Zref = float(input('\nWrite the wanted z referance: '))
-                                DeltaX = float(input('\nWrite the wanted change in X: '))
+                                Yref = int(input('\nWrite the wanted y referance: '))
+                                Zref = int(input('\nWrite the wanted z referance: '))
+                                DeltaX = int(input('\nWrite the wanted change in X: '))
                             except ValueError:
                                 print('Error: That is not a number')
                             else:
@@ -103,9 +103,7 @@ while True:
                         print()
                         print('Close plots to continue')
                         print()
-                        print(result)
                         dataPlot(result, plotstatistic, Yref, Zref, DeltaX)
-                        break
         elif choice == 4:
             print()
             print('Quitting the program')
