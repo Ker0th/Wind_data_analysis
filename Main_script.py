@@ -25,7 +25,7 @@ while True:
             print()
             data = dataLoad(filename, Nx,Ny,Nz)
         except FileNotFoundError: #hopper tilbage til main menu
-            print('\nError: wrong file name\n')
+            print('\nError: wrong file name, please enter a valid filename\n')
         except ValueError:
             print('\nError: Please input a valid whole number\n')
 
@@ -125,10 +125,10 @@ while True:
                                 print('\nError: The reference values must be a positive interger')
                                 continue
                             result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
-                            dataPlot(result, plotstatistic)
                             print()
                             print('Close plots to continue')
                             print()
+                            dataPlot(result, plotstatistic)
                             break
                 # calclate the statistic the user wanted with default values for yref, zref and deltax
                 else:
@@ -140,7 +140,7 @@ while True:
                     print()
                     print('Close plots to continue')
                     print()
-                    dataPlot(result, plotstatistic, Yref, Zref, DeltaX)
+                    dataPlot(result, plotstatistic)
 
     #Closing the program
     elif choice == 4:
