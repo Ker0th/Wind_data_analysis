@@ -2,10 +2,14 @@ from Data_load import *
 from Data_satistics import *
 from Data_plot import *
 from Menu import *
-dataorigin = np.zeros(((1,1,1)))
+#defining requred start data
 data = np.zeros(((1,1,1)))
 result = np.zeros((1,1))
+
+#Defining the different menus
 menuItems = np.array([' Load data', ' Display statistics', ' Generate plots', ' Quit'])
+statItems = np.array([' Mean', ' Variance', ' Cross correlation', ' Return to main menu'])
+plotstatItems = np.array([' Mean', ' Variance', ' Cross correlation', ' Return to main menu'])
 while True:
     choice = displayMenu(menuItems)
     if choice == 1:
@@ -19,8 +23,8 @@ while True:
             print()
             Nz = int(input('Please enter a desired length of the z dimension: '))
             print()
-            dataorigin = data = dataLoad(filename, Nx,Ny,Nz)
-        except FileNotFoundError:
+            data = dataLoad(filename, Nx,Ny,Nz)
+        except FileNotFoundError: #hopper tilbage til main menu
             print('\nError: wrong file name\n')
         except ValueError:
             print('\nError: Please input a valid whole number\n')
@@ -29,7 +33,6 @@ while True:
             print('\nError: no data has been loaded\n')
         else:
             #run Statistic function
-            statItems = np.array([' Mean', ' Variance', ' Cross correlation', ' Return to main menu'])
             print('\nPlease select a type of statistic\n')
             #data = dataorigin
             while True:
@@ -47,11 +50,17 @@ while True:
                             Zref = int(input('\nWrite the wanted z referance: '))
                             DeltaX = int(input('\nWrite the wanted change in X: '))
                         except ValueError:
-                                print('Error: That is not a number')
+                                print('\nError: That is not a number, or an interger')
                         else:
-                            result = dataStatistics(data, statistic, Yref, Zref, DeltaX)
+                            if Yref > Ny or Zref > Nz or DeltaX > Nx:
+                                print('\nError: your refence must be lower than the loaded data dimensions')
+                                continue
+                            elif Yref < 0 or Zref < 0 or DeltaX < 0:
+                                print('\nError: The reference values must be a positive interger')
+                                continue
+                            result = dataStatistics(data, statistic, Yref, Zref, DeltaX) #vi skal kunne vælge en specefik mean/varianse for y/z
                             print()
-                            print('the{0} is'.format(statistic), result)
+                            print('the{0} is'.format(statistic), result) # CHECK STRINGEN
                             print()
                             break
                 #calclate the statistic the user wanted with default values for yref, zref and deltax
@@ -67,8 +76,7 @@ while True:
         if data.any() == 0:
             print('\nError: no data has been loaded\n')
         else:
-            plotstatItems = np.array([' Mean', ' Variance', ' Cross correlation', ' Return to main menu'])
-            print('\nPlease select a type of statistic\n')
+            print('\nPlease select a type of statistic that you want to plot\n')
             #data = dataorigin
             while True:
                 stat = displayMenu(plotstatItems)
@@ -84,8 +92,14 @@ while True:
                             Zref = int(input('\nWrite the wanted z referance: '))
                             DeltaX = int(input('\nWrite the wanted change in X: '))
                         except ValueError:
-                            print('Error: That is not a number')
+                            print('\nError: That is not a number')
                         else:
+                            if 0 < Yref > Ny or 0 < Zref > Nz or 0 < DeltaX > Nx:
+                                print('\nError: your refence must be lower than the loaded data dimensions')
+                                continue
+                            elif Yref < 0 or Zref < 0 or DeltaX < 0:
+                                print('\nError: The reference values must be a positive interger')
+                                continue
                             result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
                             dataPlot(result, plotstatistic, Yref, Zref, DeltaX)
                             print()
