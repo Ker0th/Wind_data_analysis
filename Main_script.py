@@ -3,7 +3,7 @@ from Data_satistics import *
 from Data_plot import *
 from Menu import *
 #defining requred start data
-data = np.zeros(((1,1,1)))
+data = None
 result = np.zeros((1,1))
 
 #Defining the different menus
@@ -28,8 +28,9 @@ while True:
             print('\nError: wrong file name\n')
         except ValueError:
             print('\nError: Please input a valid whole number\n')
+
     elif choice == 2:
-        if data.any() == 0:
+        if data is None:
             print('\nError: no data has been loaded\n')
         else:
             #run Statistic function
@@ -52,6 +53,7 @@ while True:
                         except ValueError:
                                 print('\nError: That is not a number, or an interger')
                         else:
+                            #checks if the variables are in the required range
                             if Yref > Ny or Zref > Nz or DeltaX > Nx:
                                 print('\nError: your refence must be lower than the loaded data dimensions')
                                 continue
@@ -60,7 +62,7 @@ while True:
                                 continue
                             result = dataStatistics(data, statistic, Yref, Zref, DeltaX) #vi skal kunne vælge en specefik mean/varianse for y/z
                             print()
-                            print('the{0} is'.format(statistic), result) # CHECK STRINGEN
+                            print('the{0} is'.format(statistic), result[ycoord, zcoord])  # CHECK STRINGEN
                             print()
                             break
                 #calclate the statistic the user wanted with default values for yref, zref and deltax
@@ -68,16 +70,37 @@ while True:
                     Yref = 0
                     Zref = 0
                     DeltaX = 0
-                    result = dataStatistics(data, statistic,Yref, Zref, DeltaX)
+                    result = dataStatistics(data, statistic, 0, 0, 0)
                     print()
-                    print('the{0} is '.format(statistic), result)
+                    print('the uncut{0} is '.format(statistic), result)
                     print()
+
+                    #ask the user to give a coordinate set to display a value for
+                    while True:
+                        try:
+                            ycoord = int(input('\nGive me a damn y-coordinate: '))
+                            zcoord = int(input('\nGive me a damn y-coordinate: '))
+                        except ValueError:
+                            print('\nError: That is not a number, or an interger')
+                        else:
+                            # checks if the variables are in the required range
+                            if ycoord > Ny or zcoord > Nz:
+                                print('\nError: Your coordinates must be lower than the loaded data dimensions')
+                                continue
+                            elif ycoord < 0 or zcoord < 0:
+                                print('\nError: The reference values must be a positive interger')
+                                continue
+                            print()
+                            print('the{0} is {1} in the y-coordinate: {2} and z-coordinate: {3}'.format(statistic, result[ycoord,zcoord], ycoord, zcoord))  # CHECK STRINGEN
+                            print()
+                            break
+
+    #going to the menu for plotting
     elif choice == 3:
-        if data.any() == 0:
+        if data is None:
             print('\nError: no data has been loaded\n')
         else:
             print('\nPlease select a type of statistic that you want to plot\n')
-            #data = dataorigin
             while True:
                 stat = displayMenu(plotstatItems)
                 plotstatistic = plotstatItems[stat - 1]
@@ -94,6 +117,7 @@ while True:
                         except ValueError:
                             print('\nError: That is not a number')
                         else:
+                            #making sure the arguments are in valid ranges
                             if 0 < Yref > Ny or 0 < Zref > Nz or 0 < DeltaX > Nx:
                                 print('\nError: your refence must be lower than the loaded data dimensions')
                                 continue
@@ -101,7 +125,7 @@ while True:
                                 print('\nError: The reference values must be a positive interger')
                                 continue
                             result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
-                            dataPlot(result, plotstatistic, Yref, Zref, DeltaX)
+                            dataPlot(result, plotstatistic)
                             print()
                             print('Close plots to continue')
                             print()
@@ -117,6 +141,8 @@ while True:
                     print('Close plots to continue')
                     print()
                     dataPlot(result, plotstatistic, Yref, Zref, DeltaX)
+
+    #Closing the program
     elif choice == 4:
         print()
         print('Quitting the program')
