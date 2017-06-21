@@ -4,7 +4,7 @@ def inputNumber(prompt, length):
         try:
             num = int(input(prompt))
         except ValueError:
-            print('That is not even a number')
+            print('That is not a number')
         else:
             if num not in range(1,length+1):
                 print('that is not a valid option, try again')

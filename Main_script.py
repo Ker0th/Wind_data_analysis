@@ -24,7 +24,7 @@ while True:
             Nz = int(input('Please enter a desired length of the z dimension: '))
             print()
             data = dataLoad(filename, Nx,Ny,Nz)
-        except FileNotFoundError: #hopper tilbage til main menu
+        except FileNotFoundError:
             print('\nError: wrong file name, please enter a valid filename\n')
         except ValueError:
             print('\nError: Please input a valid whole number\n')
@@ -45,25 +45,42 @@ while True:
                     break
                 #checks if the user wants to use cross correlation statistic and ask the user to input the required values
                 elif statistic == ' Cross correlation':
+                    print('\nYou will be needed to input some reference points\n')
                     while True:
                         try:
-                            Yref = int(input('\nWrite the wanted y referance: '))
-                            Zref = int(input('\nWrite the wanted z referance: '))
-                            DeltaX = int(input('\nWrite the wanted change in X: '))
+                            Yref = int(input('\nPlease choose a reference for the y coordinate: '))
+                            Zref = int(input('\nPlease choose a reference for the z coordinate: '))
+                            DeltaX = int(input('\nPlease choose the separation in X: '))
                         except ValueError:
-                                print('\nError: That is not a number, or an interger')
+                                print('\nError: That is not a number, or an integer')
                         else:
                             #checks if the variables are in the required range
-                            if Yref > Ny or Zref > Nz or DeltaX > Nx:
-                                print('\nError: your refence must be lower than the loaded data dimensions')
+                            if not(Yref < Ny) or not(Zref < Nz) or not(DeltaX < Nx):
+                                print('\nError: your values must be lower than the loaded data dimensions')
                                 continue
                             elif Yref < 0 or Zref < 0 or DeltaX < 0:
-                                print('\nError: The reference values must be a positive interger')
+                                print('\nError: The reference values must be a positive integer')
                                 continue
-                            result = dataStatistics(data, statistic, Yref, Zref, DeltaX) #vi skal kunne vælge en specefik mean/varianse for y/z
-                            print()
-                            print('the{0} is'.format(statistic), result[ycoord, zcoord])  # CHECK STRINGEN
-                            print()
+                            result = dataStatistics(data, statistic, Yref, Zref, DeltaX)
+                            # ask the user to give a coordinate set to display a value for
+                            while True:
+                                try:
+                                    ycoord = int(input('\nPlease choose an y-coordinate: '))
+                                    zcoord = int(input('\nPlease choose a z-coordinate: '))
+                                except ValueError:
+                                    print('\nError: That is not a number, or an integer')
+                                else:
+                                    # checks if the variables are in the required range
+                                    if not (ycoord < Ny) or not (zcoord < Nz):
+                                        print('\nError: Your coordinates must be lower than the loaded data dimensions')
+                                        continue
+                                    elif ycoord < 0 or zcoord < 0:
+                                        print('\nError: The reference values must be a positive integer')
+                                        continue
+                                    print()
+                                    print('the{0} is {1} for the point where the y-coordinate is: {2} and z-coordinate: {3}'.format(statistic,result[ycoord, zcoord],ycoord,zcoord))  # CHECK STRINGEN
+                                    print()
+                                    break
                             break
                 #calclate the statistic the user wanted with default values for yref, zref and deltax
                 else:
@@ -71,27 +88,24 @@ while True:
                     Zref = 0
                     DeltaX = 0
                     result = dataStatistics(data, statistic, 0, 0, 0)
-                    print()
-                    print('the uncut{0} is '.format(statistic), result)
-                    print()
 
                     #ask the user to give a coordinate set to display a value for
                     while True:
                         try:
-                            ycoord = int(input('\nGive me a damn y-coordinate: '))
-                            zcoord = int(input('\nGive me a damn y-coordinate: '))
+                            ycoord = int(input('\nPlease choose a y-coordinate: '))
+                            zcoord = int(input('\nPlease choose a z-coordinate: '))
                         except ValueError:
-                            print('\nError: That is not a number, or an interger')
+                            print('\nError: That is not a number, or an integer')
                         else:
                             # checks if the variables are in the required range
-                            if ycoord > Ny or zcoord > Nz:
+                            if not(ycoord < Ny) or not(zcoord < Nz):
                                 print('\nError: Your coordinates must be lower than the loaded data dimensions')
                                 continue
                             elif ycoord < 0 or zcoord < 0:
-                                print('\nError: The reference values must be a positive interger')
+                                print('\nError: The reference values must be a positive integer')
                                 continue
                             print()
-                            print('the{0} is {1} in the y-coordinate: {2} and z-coordinate: {3}'.format(statistic, result[ycoord,zcoord], ycoord, zcoord))  # CHECK STRINGEN
+                            print('the{0} is {1} for the point where the y-coordinate is: {2} and z-coordinate: {3}'.format(statistic, result[ycoord,zcoord], ycoord, zcoord))  # CHECK STRINGEN
                             print()
                             break
 
@@ -109,24 +123,25 @@ while True:
                     break
                 #checks if the user wants to use cross correlation statistic and ask the user to input the required values
                 elif plotstatistic == ' Cross correlation':
+                    print('\nYou will be needed to input some reference points\n')
                     while True:
                         try:
-                            Yref = int(input('\nWrite the wanted y referance: '))
-                            Zref = int(input('\nWrite the wanted z referance: '))
-                            DeltaX = int(input('\nWrite the wanted change in X: '))
+                            Yref = int(input('\nPlease choose a reference for the y coordinate: '))
+                            Zref = int(input('\nPlease choose a reference for the z coordinate: '))
+                            DeltaX = int(input('\nPlease choose the separation in X: '))
                         except ValueError:
                             print('\nError: That is not a number')
                         else:
                             #making sure the arguments are in valid ranges
                             if 0 < Yref > Ny or 0 < Zref > Nz or 0 < DeltaX > Nx:
-                                print('\nError: your refence must be lower than the loaded data dimensions')
+                                print('\nError: your reference must be lower than the loaded data dimensions')
                                 continue
                             elif Yref < 0 or Zref < 0 or DeltaX < 0:
-                                print('\nError: The reference values must be a positive interger')
+                                print('\nError: The reference values must be a positive integer')
                                 continue
                             result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
                             print()
-                            print('Close plots to continue')
+                            print('Close the plot to continue')
                             print()
                             dataPlot(result, plotstatistic)
                             break
@@ -138,7 +153,7 @@ while True:
                     #result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
                     result = dataStatistics(data, plotstatistic, Yref, Zref, DeltaX)
                     print()
-                    print('Close plots to continue')
+                    print('Close the plot to continue')
                     print()
                     dataPlot(result, plotstatistic)
 
@@ -147,5 +162,3 @@ while True:
         print()
         print('Quitting the program')
         break
-
-#testtest
