@@ -4,8 +4,6 @@ from Data_plot import *
 from Menu import *
 #defining requred start data
 data = None
-result = np.zeros((1,1))
-
 #Defining the different menus
 menuItems = np.array([' Load data', ' Display statistics', ' Generate plots', ' Quit'])
 statItems = np.array([' Mean', ' Variance', ' Cross correlation', ' Return to main menu'])
