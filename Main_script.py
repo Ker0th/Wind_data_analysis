@@ -4,9 +4,10 @@ from Data_plot import *
 from Menu import *
 #defining requred start data
 data = None
+result = None
 #Defining the different menus
 menuItems = np.array([' Load data', ' Display statistics', ' Generate plots', ' Quit'])
-statItems = np.array([' Mean', ' Variance', ' Cross correlation', ' Return to main menu'])
+statItems = np.array([' Mean', ' Variance', ' Cross correlation', ' Display the statistical matrix', ' Return to main menu'])
 plotstatItems = np.array([' Mean', ' Variance', ' Cross correlation', ' Return to main menu'])
 while True:
     choice = displayMenu(menuItems)
@@ -43,7 +44,7 @@ while True:
                     break
                 #checks if the user wants to use cross correlation statistic and ask the user to input the required values
                 elif statistic == ' Cross correlation':
-                    print('\nYou will be needed to input some reference points\n')
+                    print('\nYou will be needed to input some reference points, that is between 0 and the chosen dimension\n')
                     while True:
                         try:
                             Yref = int(input('\nPlease choose a reference for the y coordinate: '))
@@ -80,6 +81,15 @@ while True:
                                     print()
                                     break
                             break
+
+                #shows the full matrix for the statistic that have previously been calculated
+                elif statistic == ' Display the statistical matrix':
+                    if result is None:
+                        print('\nError: no statistical data has been loaded\n')
+                    else:
+                        print()
+                        print('the previous statistic as a matrix is {0}'.format(result))
+                        print()
                 #calclate the statistic the user wanted with default values for yref, zref and deltax
                 else:
                     Yref = 0
@@ -121,7 +131,7 @@ while True:
                     break
                 #checks if the user wants to use cross correlation statistic and ask the user to input the required values
                 elif plotstatistic == ' Cross correlation':
-                    print('\nYou will be needed to input some reference points\n')
+                    print('\nYou will be needed to input some reference points, that is between 0 and the chosen dimension\n')
                     while True:
                         try:
                             Yref = int(input('\nPlease choose a reference for the y coordinate: '))
